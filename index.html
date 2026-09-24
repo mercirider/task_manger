@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 Task Manager Pro</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">📋</div>
+      <div>
+        <h1>TaskManager</h1>
+        <span>PRO</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-filter="all">
+      <span class="nav-icon">📥</span>
+      <span>All Tasks</span>
+      <span class="nav-count" id="countAll">0</span>
+    </button>
+    <button class="nav-item" data-filter="today">
+      <span class="nav-icon">📅</span>
+      <span>Today</span>
+      <span class="nav-count" id="countToday">0</span>
+    </button>
+    <button class="nav-item" data-filter="important">
+      <span class="nav-icon">⭐</span>
+      <span>Important</span>
+      <span class="nav-count" id="countImportant">0</span>
+    </button>
+    <button class="nav-item" data-filter="completed">
+      <span class="nav-icon">✅</span>
+      <span>Completed</span>
+      <span class="nav-count" id="countCompleted">0</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-nav">
+    <button class="nav-item" id="categoriesBtn">
+      <span class="nav-icon">🏷️</span>
+      <span>Categories</span>
+    </button>
+    <div class="categories-list" id="categoriesList"></div>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="nav-item" id="themeToggle">
+      <span class="nav-icon" id="themeIcon">🌙</span>
+      <span id="themeText">Dark Mode</span>
+    </button>
+    <button class="nav-item danger" id="clearAllBtn">
+      <span class="nav-icon">🗑️</span>
+      <span>Clear All</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main">
+  <!-- Topbar -->
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search tasks..." />
+    </div>
+    <div class="user-avatar">👤</div>
+  </header>
+
+  <!-- Stats -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">📋</div>
+      <div class="stat-info">
+        <div class="stat-number" id="totalTasks">0</div>
+        <div class="stat-title">Total Tasks</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✅</div>
+      <div class="stat-info">
+        <div class="stat-number" id="completedTasks">0</div>
+        <div class="stat-title">Completed</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange">⏳</div>
+      <div class="stat-info">
+        <div class="stat-number" id="pendingTasks">0</div>
+        <div class="stat-title">Pending</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">🔥</div>
+      <div class="stat-info">
+        <div class="stat-number" id="overdueTasks">0</div>
+        <div class="stat-title">Overdue</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add Task Bar -->
+  <section class="add-task-section">
+    <input type="text" id="taskInput" placeholder="Kya kaam karna hai? Likho aur Enter dabao..." />
+    <button class="add-btn" id="addTaskBtn">
+      <span>+</span> Add Task
+    </button>
+  </section>
+
+  <!-- Advanced Options (hidden by default) -->
+  <section class="advanced-options" id="advancedOptions">
+    <div class="option">
+      <label>📅 Due Date</label>
+      <input type="date" id="dueDate" />
+    </div>
+    <div class="option">
+      <label>🏷️ Category</label>
+      <select id="category">
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+        <option value="study">Study</option>
+        <option value="shopping">Shopping</option>
+        <option value="health">Health</option>
+      </select>
+    </div>
+    <div class="option">
+      <label>⚡ Priority</label>
+      <select id="priority">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Section header -->
+  <div class="tasks-header">
+    <h2 id="sectionTitle">All Tasks</h2>
+    <div class="sort-box">
+      <label>Sort by:</label>
+      <select id="sortSelect">
+        <option value="date">Date Added</option>
+        <option value="due">Due Date</option>
+        <option value="priority">Priority</option>
+        <option value="alpha">A-Z</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tasks list -->
+  <section class="tasks-list" id="tasksList"></section>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🎯</div>
+    <h3>Koi task nahi hai!</h3>
+    <p>Upar input se naya task add karein</p>
+  </div>
+</main>
+
+<!-- ═══════════ EDIT MODAL ═══════════ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>✏️ Edit Task</h3>
+      <button class="close-btn" id="closeEditModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>Task Title</label>
+      <input type="text" id="editTitle" />
+
+      <div class="modal-row">
+        <div>
+          <label>📅 Due Date</label>
+          <input type="date" id="editDueDate" />
+        </div>
+        <div>
+          <label>🏷️ Category</label>
+          <select id="editCategory">
+            <option value="personal">Personal</option>
+            <option value="work">Work</option>
+            <option value="study">Study</option>
+            <option value="shopping">Shopping</option>
+            <option value="health">Health</option>
+          </select>
+        </div>
+      </div>
+
+      <label>⚡ Priority</label>
+      <select id="editPriority">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="cancelEdit">Cancel</button>
+      <button class="btn-primary" id="saveEdit">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
